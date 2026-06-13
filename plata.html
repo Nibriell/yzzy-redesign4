@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finalizează — YZZY!</title>
+<link rel="stylesheet" href="theme.css?v=1">
+<style>
+.pay{padding:120px 4vw 90px;max-width:1100px;margin:0 auto}
+.pay h1{font-size:clamp(2rem,5vw,3.6rem);margin-bottom:8px}
+.pay-sub{font-family:var(--f-mono);font-size:.7rem;font-weight:700;text-transform:uppercase;color:var(--muted);margin-bottom:40px}
+.pay-grid{display:grid;grid-template-columns:1fr 380px;gap:28px;align-items:start}
+@media(max-width:900px){.pay-grid{grid-template-columns:1fr}}
+.fieldset{background:#fff;border:var(--bd);border-radius:var(--radius);padding:26px;margin-bottom:18px;box-shadow:var(--shadow-sm)}
+.fieldset h3{font-family:var(--f-display);font-weight:800;font-size:1.1rem;margin-bottom:6px;display:flex;align-items:center;gap:10px;letter-spacing:-.02em}
+.fieldset h3 .step{width:28px;height:28px;border-radius:50%;background:var(--violet);color:#fff;border:2px solid var(--ink);display:grid;place-items:center;font-size:.8rem;font-family:var(--f-display);font-weight:800}
+.fieldset p.hint{font-family:var(--f-mono);font-size:.6rem;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.frow.one{grid-template-columns:1fr}
+label{display:block;font-family:var(--f-mono);font-size:.58rem;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+input,select{width:100%;background:var(--paper);border:2px solid var(--ink);color:var(--ink);font-family:var(--f-text);font-size:.92rem;font-weight:500;padding:12px 14px;border-radius:10px;outline:none;transition:background .2s,box-shadow .2s}
+input:focus,select:focus{background:#fff;box-shadow:3px 3px 0 var(--ink)}
+.pay-methods{display:flex;flex-direction:column;gap:10px}
+.pm{display:flex;align-items:center;gap:14px;border:2px solid var(--ink);border-radius:12px;padding:14px 16px;cursor:none;background:#fff;transition:background .2s,box-shadow .12s,transform .12s}
+.pm:hover{box-shadow:3px 3px 0 var(--ink);transform:translate(-1px,-1px)}
+.pm.active{background:var(--yellow)}
+.pm input{width:auto}
+.pm .pm-label{flex:1}
+.pm .pm-label b{display:block;font-size:.94rem;font-weight:700}
+.pm .pm-label span{font-family:var(--f-mono);font-size:.58rem;text-transform:uppercase;color:var(--muted)}
+.rate-detail{display:none;padding:16px;background:var(--paper-2);border:2px solid var(--ink);border-radius:10px;margin-top:8px}
+.rate-detail.show{display:block}
+.rate-detail .partners{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.rate-detail .partners a{background:#fff;border:2px solid var(--ink);border-radius:8px;padding:10px;display:grid;place-items:center;min-height:50px;transition:transform .12s,box-shadow .12s}
+.rate-detail .partners a:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink)}
+.rate-detail .partners img{max-height:26px;max-width:100%}
+.rate-months{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}
+.rate-months button{font-family:var(--f-mono);font-size:.66rem;font-weight:700;padding:8px 14px;border-radius:100px;border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:none}
+.rate-months button.active{background:var(--violet);color:#fff}
+.rate-out{font-family:var(--f-display);font-weight:800;color:var(--violet);font-size:1.5rem;letter-spacing:-.02em}
+.pass{background:#fff;border:var(--bd);border-radius:var(--radius);overflow:hidden;position:sticky;top:90px;box-shadow:var(--shadow)}
+.pass-head{background:var(--violet);color:#fff;padding:18px 22px;display:flex;justify-content:space-between;align-items:center}
+.pass-head b{font-family:var(--f-display);font-weight:800;font-size:1rem;letter-spacing:-.02em}
+.pass-head .code{font-family:var(--f-mono);font-size:.62rem;color:var(--yellow)}
+.pass-body{padding:22px}
+.pass-item{display:flex;justify-content:space-between;gap:12px;padding:8px 0;font-size:.84rem;color:var(--muted);border-bottom:2px solid var(--paper-2)}
+.pass-item:last-of-type{border-bottom:none}
+.pass-item b{color:var(--ink);font-weight:600}
+.pass-item .q{font-family:var(--f-mono);font-size:.6rem;color:var(--violet)}
+.pass-total{display:flex;justify-content:space-between;border-top:2px solid var(--ink);margin-top:10px;padding-top:16px;font-family:var(--f-display);font-weight:800;font-size:1.5rem;letter-spacing:-.03em}
+.pass-total span:last-child{color:var(--violet)}
+.note{font-family:var(--f-mono);font-size:.56rem;text-transform:uppercase;color:var(--muted);text-align:center;margin-top:14px;line-height:1.6}
+.confirm{display:none;text-align:center;padding:40px 0}
+.confirm.show{display:block}
+.confirm .tick{width:88px;height:88px;border-radius:50%;background:var(--lime);color:var(--ink);border:var(--bd);display:grid;place-items:center;font-size:2.6rem;margin:0 auto 24px;font-family:var(--f-display);box-shadow:var(--shadow);transform:rotate(-3deg)}
+.confirm h2{font-size:clamp(2rem,5vw,3.4rem);margin-bottom:12px}
+.confirm p{color:var(--muted);max-width:420px;margin:0 auto 8px;font-weight:500}
+.confirm .pnr{font-family:var(--f-display);font-weight:800;color:var(--violet);font-size:1.8rem;margin:18px 0;letter-spacing:-.02em}
+</style>
+</head>
+<body>
+<nav id="nav"></nav>
+
+<main class="pay">
+  <span class="sec-num" style="display:inline-block;margin-bottom:12px">FINALIZARE</span>
+  <h1 class="display" id="payTitle">Aproape <em class="violet">gata</em></h1>
+  <p class="pay-sub" id="paySub">Completează datele — comandă demo, nu se procesează plată reală</p>
+  <div id="payBody"></div>
+</main>
+
+<footer id="footer"></footer>
+
+<script src="data/catalog.js?v=1"></script>
+<script src="app.js?v=1"></script>
+<script>
+renderNav('catalog.html');
+renderFooter(document.getElementById('footer'));
+
+const items=cart.map(it=>({...it,p:byId(it.id)})).filter(x=>x.p);
+const body=document.getElementById('payBody');
+
+if(!items.length){
+  body.innerHTML=`<div style="text-align:center;padding:60px 0">
+    <p class="display" style="font-size:2rem;margin-bottom:14px">Coșul e gol.</p>
+    <a class="btn btn-violet" href="catalog.html">Hai la shop →</a></div>`;
+}else{
+  const total=cartTotal();
+  body.innerHTML=`<div class="pay-grid">
+    <div>
+      <div class="fieldset">
+        <h3><span class="step">1</span> Cine ești</h3>
+        <p class="hint">Cui îi livrăm comanda</p>
+        <div class="frow"><div><label>Nume</label><input id="fNume" placeholder="Andrei"></div><div><label>Prenume</label><input id="fPren" placeholder="Popescu"></div></div>
+        <div class="frow"><div><label>Email</label><input id="fMail" type="email" placeholder="andrei@email.ro"></div><div><label>Telefon</label><input id="fTel" placeholder="07xx xxx xxx"></div></div>
+      </div>
+      <div class="fieldset">
+        <h3><span class="step">2</span> Unde ajunge</h3>
+        <p class="hint">Adresa de livrare</p>
+        <div class="frow one"><div><label>Adresă</label><input id="fAdr" placeholder="Str. Exemplu nr. 10, bl. A, ap. 5"></div></div>
+        <div class="frow"><div><label>Oraș</label><input id="fOras" placeholder="Suceava"></div><div><label>Județ</label><input id="fJud" placeholder="Suceava"></div></div>
+      </div>
+      <div class="fieldset">
+        <h3><span class="step">3</span> Cum plătești</h3>
+        <p class="hint">Alege metoda</p>
+        <div class="pay-methods">
+          <label class="pm active"><input type="radio" name="pm" value="card" checked><span class="pm-label"><b>Card online</b><span>Plată securizată Netopia</span></span></label>
+          <label class="pm"><input type="radio" name="pm" value="ramburs"><span class="pm-label"><b>Ramburs la livrare</b><span>Plătești curierului</span></span></label>
+          <label class="pm" id="pmRate"><input type="radio" name="pm" value="rate"><span class="pm-label"><b>Rate? Easy.</b><span>Aprobare în câteva minute, 100% online</span></span></label>
+        </div>
+        <div class="rate-detail" id="rateDetail">
+          <p class="hint">Alege finanțatorul (te ducem pe pagina lui)</p>
+          <div class="partners">
+            <a href="https://yzzy.ro/credit-100-online-prin-unicredit-consumer-financing/" target="_blank" rel="noopener"><img src="https://yzzy.ro/wp-content/uploads/2025/02/logo-unicredit-contrast-alb-2.jpg" alt="UniCredit"></a>
+            <a href="https://yzzy.ro/" target="_blank" rel="noopener"><img src="https://yzzy.ro/wp-content/uploads/2025/02/Logo-Smart-by-BT-Direct-1-300x115.webp" alt="Smart by BT"></a>
+            <a href="https://yzzy.ro/regulament-leanpay/" target="_blank" rel="noopener"><img src="https://yzzy.ro/wp-content/uploads/2025/06/LP-logo-small-300x86.png" alt="LeanPay"></a>
+            <a href="https://yzzy.ro/" target="_blank" rel="noopener"><img src="https://yzzy.ro/wp-content/uploads/2025/02/tbi-bank-logo.webp" alt="TBI Bank"></a>
+          </div>
+          <div class="rate-months" id="rateMonths"></div>
+          <div>Cost împărțit la rate: <span class="rate-out" id="rateOut"></span> <span class="muted mono" style="font-size:.6rem">/lună · estimare orientativă*</span></div>
+          <p class="muted mono" style="font-size:.54rem;margin-top:8px;line-height:1.5">* Prețul împărțit la numărul de rate. Rata reală include dobânda și DAE stabilite de finanțator (ex. UniCredit: dobândă fixă 11–25%/an, DAE 14,93–46,01%).</p>
+        </div>
+      </div>
+    </div>
+    <aside class="pass">
+      <div class="pass-head"><b>Comanda ta</b><span class="code">YZZY! · 2026</span></div>
+      <div class="pass-body">
+        ${items.map(({p,qty})=>`<div class="pass-item"><b>${p.brand?p.brand+' ':''}${p.name}</b><span><span class="q">×${qty}</span> ${fmtLei(p.price*qty)}</span></div>`).join('')}
+        <div class="pass-item"><span>Livrare</span><b class="violet">Gratis · 24h</b></div>
+        <div class="pass-total"><span>Total</span><span>${fmtLei(total)}</span></div>
+        <button class="btn btn-violet" id="placeBtn" style="width:100%;justify-content:center;margin-top:18px">Trimite comanda →</button>
+        <p class="note">Demo de design.<br>Comanda reală se procesează pe platforma YZZY.</p>
+      </div>
+    </aside>
+  </div>`;
+
+  document.querySelectorAll('.pm input').forEach(r=>r.addEventListener('change',()=>{
+    document.querySelectorAll('.pm').forEach(x=>x.classList.remove('active'));
+    r.closest('.pm').classList.add('active');
+    document.getElementById('rateDetail').classList.toggle('show',r.value==='rate');
+  }));
+  const months=[6,12,18,24,36];
+  document.getElementById('rateMonths').innerHTML=months.map((m,i)=>`<button class="${i===1?'active':''}" data-m="${m}">${m} rate</button>`).join('');
+  const calcRate=m=>document.getElementById('rateOut').textContent=fmtLei(Math.round(total/m));
+  calcRate(12);
+  document.getElementById('rateMonths').addEventListener('click',e=>{
+    const b=e.target.closest('[data-m]');if(!b)return;
+    document.querySelectorAll('#rateMonths button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');calcRate(+b.dataset.m);
+  });
+  document.getElementById('placeBtn').addEventListener('click',()=>{
+    const nume=document.getElementById('fNume').value.trim();
+    if(!nume){toast('<b>!</b> Completează numele');document.getElementById('fNume').focus();return;}
+    const pnr='YZ'+Math.abs(total*7%99999).toString().padStart(5,'0');
+    cart=[];saveCart();updateCartBadge();
+    document.getElementById('payTitle').innerHTML='Gata, <em class="violet">e fire!</em>';
+    document.getElementById('paySub').textContent='Mulțumim! Comanda ta e pe drum.';
+    body.innerHTML=`<div class="confirm show">
+      <div class="tick">✓</div>
+      <h2 class="display">Bravo, ${nume}! 🎉</h2>
+      <p>Comanda ta a fost înregistrată. Vei primi un email cu detaliile și ai garanție 2 ani la fiecare produs.</p>
+      <div class="pnr">COD COMANDĂ · ${pnr}</div>
+      <p class="muted mono" style="font-size:.6rem">Aceasta este o comandă demo. Pe site-ul real, plata se procesează prin Netopia / partenerii de rate.</p>
+      <div style="margin-top:26px"><a class="btn btn-violet" href="catalog.html">Înapoi la shop →</a></div>
+    </div>`;
+    scrollTo({top:0,behavior:'smooth'});
+  });
+}
+</script>
+</body>
+</html>

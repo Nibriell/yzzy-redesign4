@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop — YZZY!</title>
+<meta name="description" content="Shop YZZY: telefoane, tablete, laptopuri, smartwatch și accesorii recondiționate, garantate 2 ani.">
+<link rel="stylesheet" href="theme.css?v=1">
+<style>
+.cat-hero{padding:128px 4vw 30px}
+.cat-hero h1{font-size:clamp(2.6rem,7vw,5rem)}
+.cat-bar{position:sticky;top:62px;z-index:50;background:var(--paper);padding:16px 4vw;border-top:3px solid var(--ink);border-bottom:3px solid var(--ink);display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.cat-controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.cat-controls select{background:#fff;border:var(--bd);color:var(--ink);font-family:var(--f-text);font-size:.82rem;font-weight:700;padding:9px 14px;border-radius:100px;cursor:none;box-shadow:2px 2px 0 var(--ink)}
+.view-toggle{display:flex;gap:4px;border:var(--bd);border-radius:100px;padding:3px;background:#fff}
+.view-toggle button{background:none;border:none;color:var(--muted);width:34px;height:30px;border-radius:100px;cursor:none;font-size:.9rem;transition:background .2s,color .2s}
+.view-toggle button.active{background:var(--violet);color:#fff}
+.count-line{font-family:var(--f-mono);font-size:.72rem;font-weight:700;text-transform:uppercase}
+.count-line b{color:var(--violet)}
+.cat-body{padding:34px 4vw 90px}
+.empty{text-align:center;padding:80px 0;color:var(--muted);font-family:var(--f-display);font-weight:800;font-size:1.4rem}
+</style>
+</head>
+<body>
+<nav id="nav"></nav>
+
+<header class="cat-hero">
+  <span class="sec-num" style="display:inline-block;margin-bottom:14px">SHOP · TOT STOCUL</span>
+  <h1 class="display">Hai la <em class="violet">shopping</em></h1>
+</header>
+
+<div class="cat-bar">
+  <div class="pills" id="catPills"></div>
+  <div class="cat-controls">
+    <span class="count-line"><b id="resCount">0</b> PRODUSE</span>
+    <select id="sortSel" aria-label="Sortează">
+      <option value="new">Cele mai noi</option>
+      <option value="price-asc">Preț crescător</option>
+      <option value="price-desc">Preț descrescător</option>
+    </select>
+    <div class="view-toggle">
+      <button id="vGrid" class="active" aria-label="Carduri">▦</button>
+      <button id="vList" aria-label="Listă">≡</button>
+    </div>
+  </div>
+</div>
+
+<main class="cat-body">
+  <div class="pgrid" id="grid"></div>
+  <div class="board" id="list" style="display:none">
+    <div class="board-row board-head"><span class="col-name">Produs</span><span class="col-state">Stare</span><span class="col-tag">Detalii</span><span class="col-price">Preț</span></div>
+    <div id="listRows"></div>
+  </div>
+  <div class="empty" id="empty" style="display:none">Niciun produs aici. Încearcă alt raft!</div>
+</main>
+
+<footer id="footer"></footer>
+
+<script src="data/catalog.js?v=1"></script>
+<script src="app.js?v=1"></script>
+<script>
+renderNav('catalog.html');
+renderFooter(document.getElementById('footer'));
+
+let activeCat=qs('cat')||'toate',sortMode='new',view='grid';
+const pills=[{key:'toate',label:'Toate'}].concat(CATS.map(c=>({key:c.key,label:c.label})));
+document.getElementById('catPills').innerHTML=pills.map(p=>`<button class="pill${p.key===activeCat?' active':''}" data-cat="${p.key}">${p.label}</button>`).join('');
+
+function current(){
+  let list=activeCat==='toate'?P.slice():P.filter(p=>p.cat===activeCat);
+  if(sortMode==='price-asc')list.sort((a,b)=>a.price-b.price);
+  else if(sortMode==='price-desc')list.sort((a,b)=>b.price-a.price);
+  return list;
+}
+function render(){
+  const list=current();
+  document.getElementById('resCount').textContent=list.length;
+  const grid=document.getElementById('grid'),listEl=document.getElementById('list'),rows=document.getElementById('listRows'),empty=document.getElementById('empty');
+  empty.style.display=list.length?'none':'block';
+  if(view==='grid'){
+    grid.style.display='';listEl.style.display='none';
+    grid.innerHTML=list.map(cardHTML).join('');
+    bindAddButtons(grid);
+  }else{
+    grid.style.display='none';listEl.style.display=list.length?'':'none';
+    rows.innerHTML=list.map(p=>`<a class="board-row" href="produs.html?id=${p.id}">
+      <span class="col-name">${p.brand} ${p.name}</span>
+      <span class="col-state">${p.on_sale&&p.regular>p.price?'ofertă':'în stoc'}</span>
+      <span class="col-tag">${p.condition} · garanție 2 ani</span>
+      <span class="col-price">${fmtLei(p.price)}</span></a>`).join('');
+  }
+}
+document.getElementById('catPills').addEventListener('click',e=>{
+  const b=e.target.closest('[data-cat]');if(!b)return;
+  activeCat=b.dataset.cat;
+  document.querySelectorAll('#catPills .pill').forEach(x=>x.classList.toggle('active',x.dataset.cat===activeCat));
+  history.replaceState(null,'',activeCat==='toate'?'catalog.html':'catalog.html?cat='+activeCat);
+  render();
+});
+document.getElementById('sortSel').addEventListener('change',e=>{sortMode=e.target.value;render()});
+document.getElementById('vGrid').addEventListener('click',()=>{view='grid';vGrid.classList.add('active');vList.classList.remove('active');render()});
+document.getElementById('vList').addEventListener('click',()=>{view='list';vList.classList.add('active');vGrid.classList.remove('active');render()});
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Produs — YZZY!</title>
+<link rel="stylesheet" href="theme.css?v=1">
+<style>
+.pdp{padding:120px 4vw 90px;max-width:1200px;margin:0 auto}
+.crumb{font-family:var(--f-mono);font-size:.64rem;text-transform:uppercase;color:var(--muted);margin-bottom:28px}
+.crumb a{color:var(--muted);text-decoration:none}.crumb a:hover{color:var(--violet)}
+.pdp-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px}
+@media(max-width:900px){.pdp-grid{grid-template-columns:1fr;gap:34px}}
+.gallery{position:sticky;top:90px;align-self:start}
+.gmain{background:#fff;border:var(--bd);border-radius:22px;height:420px;display:grid;place-items:center;padding:40px;position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
+.gmain img{max-height:340px;max-width:90%;object-fit:contain;mix-blend-mode:multiply}
+.gthumbs{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.gthumb{width:70px;height:70px;border:2px solid var(--ink);border-radius:12px;background:#fff;display:grid;place-items:center;cursor:none;padding:8px;transition:transform .12s,box-shadow .12s}
+.gthumb.active{box-shadow:3px 3px 0 var(--ink);transform:translate(-1px,-1px)}
+.gthumb img{max-width:100%;max-height:100%;object-fit:contain;mix-blend-mode:multiply}
+.gbadge{position:absolute;top:16px;right:16px;z-index:2;font-family:var(--f-mono);font-size:.6rem;font-weight:700;text-transform:uppercase;color:var(--ink);background:var(--lime);border:2px solid var(--ink);padding:5px 12px;border-radius:100px;transform:rotate(3deg);box-shadow:2px 2px 0 var(--ink)}
+.brand-line{font-family:var(--f-mono);font-size:.66rem;text-transform:uppercase;color:var(--violet);margin-bottom:12px;font-weight:700}
+.pdp h1{font-family:var(--f-display);font-weight:800;font-size:clamp(1.9rem,4vw,2.9rem);line-height:1.02;margin-bottom:16px;letter-spacing:-.02em}
+.price-row{display:flex;align-items:baseline;gap:14px;margin:20px 0}
+.price-row .now{font-family:var(--f-display);font-weight:800;font-size:2.6rem;letter-spacing:-.03em}
+.price-row .old{font-family:var(--f-mono);font-size:1rem;color:var(--muted);text-decoration:line-through}
+.price-row .save{font-family:var(--f-mono);font-size:.66rem;font-weight:700;color:#fff;background:var(--pink);border:2px solid var(--ink);padding:5px 11px;border-radius:100px;transform:rotate(-2deg)}
+.rate-hint{font-family:var(--f-mono);font-size:.68rem;color:var(--muted);margin-bottom:22px}
+.rate-hint a{color:var(--violet);font-weight:700}
+.spec-board{border:var(--bd);border-radius:var(--radius);margin:24px 0;overflow:hidden;box-shadow:var(--shadow-sm)}
+.spec-row{display:flex;justify-content:space-between;gap:14px;padding:13px 18px;border-bottom:2px solid var(--ink);font-size:.88rem;background:#fff}
+.spec-row:last-child{border-bottom:none}
+.spec-row span:first-child{color:var(--muted)}.spec-row span:last-child{font-weight:700}
+.spec-row .ok{color:var(--violet)}
+.buy-row{display:flex;gap:12px;align-items:center;margin:24px 0}
+.qty{display:flex;align-items:center;border:var(--bd);border-radius:100px;overflow:hidden;background:#fff}
+.qty button{width:42px;height:46px;background:none;border:none;color:var(--violet);font-size:1.2rem;cursor:none}
+.qty span{width:44px;text-align:center;font-family:var(--f-display);font-weight:800}
+.perks{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:24px 0}
+.perk{display:flex;gap:10px;align-items:flex-start;font-size:.86rem;font-weight:500}
+.perk b{color:var(--violet)}
+.desc-box{background:#fff;border:var(--bd);border-radius:var(--radius);padding:26px;margin-top:30px;box-shadow:var(--shadow-sm)}
+.desc-box h3{font-family:var(--f-display);font-weight:800;font-size:1.2rem;margin-bottom:12px;letter-spacing:-.02em}
+.desc-box p{color:var(--muted);font-size:.92rem;line-height:1.7}
+.seal-row{display:flex;gap:18px;align-items:center;background:var(--yellow);border:var(--bd);border-radius:var(--radius);padding:20px;margin-top:24px;box-shadow:var(--shadow-sm)}
+.seal-row p{font-size:.86rem}.seal-row p b{font-weight:800}
+.seal{width:108px;height:108px;flex:none;position:relative;display:grid;place-items:center}
+.seal svg{position:absolute;inset:0;animation:spin 18s linear infinite}
+.seal .core{width:46px;height:46px;border-radius:50%;background:var(--violet);color:#fff;border:2px solid var(--ink);display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:15px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.related{padding:0 4vw 90px;max-width:1200px;margin:0 auto}
+.partner-mini{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.partner-mini img{height:22px;background:#fff;border:2px solid var(--ink);border-radius:6px;padding:3px 7px}
+</style>
+</head>
+<body>
+<nav id="nav"></nav>
+
+<main class="pdp" id="pdp"></main>
+<section class="related">
+  <div class="sec-head reveal"><h2 class="sec-title">Și astea <em>sunt fire</em></h2></div>
+  <div class="pgrid" id="related"></div>
+</section>
+
+<footer id="footer"></footer>
+
+<script src="data/catalog.js?v=1"></script>
+<script src="app.js?v=1"></script>
+<script>
+renderNav('catalog.html');
+renderFooter(document.getElementById('footer'));
+
+const p=byId(qs('id'))||P[0];
+document.title=`${p.brand} ${p.name} — YZZY!`;
+const sale=p.on_sale&&p.regular>p.price;
+const catLabel=(CATS.find(c=>c.key===p.cat)||{}).label||'Shop';
+let qty=1;
+
+document.getElementById('pdp').innerHTML=`
+<div class="crumb"><a href="index.html">Acasă</a> / <a href="catalog.html?cat=${p.cat}">${catLabel}</a> / ${p.name}</div>
+<div class="pdp-grid">
+  <div class="gallery">
+    <div class="gmain">
+      <span class="gbadge">verificat ✓</span>
+      <img id="gimg" src="${p.imgs[0]}" alt="${p.name}">
+    </div>
+    <div class="gthumbs" id="gthumbs">
+      ${p.imgs.map((src,i)=>`<div class="gthumb${i===0?' active':''}" data-i="${i}"><img src="${src}" alt=""></div>`).join('')}
+    </div>
+  </div>
+  <div>
+    <div class="brand-line">${p.brand||'YZZY'} · ${catLabel} · cod ${p.id.slice(0,14)}</div>
+    <h1>${p.brand?p.brand+' ':''}${p.name}</h1>
+    <div class="price-row">
+      <span class="now">${fmtLei(p.price)}</span>
+      ${sale?`<span class="old">${fmtLei(p.regular)}</span><span class="save">−${Math.round((1-p.price/p.regular)*100)}%</span>`:''}
+    </div>
+    <div class="rate-hint">și în rate prin UniCredit, BT, LeanPay sau TBI · <a href="rate.html">vezi finanțarea →</a></div>
+    <div class="spec-board">
+      <div class="spec-row"><span>Stare</span><span class="ok">${p.condition}</span></div>
+      <div class="spec-row"><span>Garanție</span><span>2 ani (24 luni)</span></div>
+      <div class="spec-row"><span>Verificare tehnică</span><span class="ok">trecută</span></div>
+      <div class="spec-row"><span>Livrare</span><span>24h · gratuită</span></div>
+      <div class="spec-row"><span>Retur</span><span>30 de zile</span></div>
+    </div>
+    <div class="buy-row">
+      <div class="qty"><button id="qMinus" aria-label="Mai puțin">−</button><span id="qVal">1</span><button id="qPlus" aria-label="Mai mult">+</button></div>
+      <button class="btn btn-violet" id="addBtn" style="flex:1">Bagă-l în coș →</button>
+    </div>
+    <div class="perks">
+      <div class="perk"><b>✓</b><span>Garanție 2 ani, ca la produsele noi</span></div>
+      <div class="perk"><b>✓</b><span>Retur gratuit 30 de zile, fără explicații</span></div>
+      <div class="perk"><b>✓</b><span>Livrare în 24h, colet asigurat</span></div>
+      <div class="perk"><b>✓</b><span>Verificat de tehnicieni, nu de o ștampilă</span></div>
+    </div>
+    <div class="seal-row">
+      ${sealHTML()}
+      <p><b>Verificat bucată cu bucată.</b><br><span>Acest dispozitiv a fost deschis, testat și igienizat în service-ul YZZY din Suceava înainte de a ajunge la tine.</span></p>
+    </div>
+    <div class="partner-mini">
+      <img src="https://yzzy.ro/wp-content/uploads/2025/02/logo-unicredit-contrast-alb-2.jpg" alt="UniCredit">
+      <img src="https://yzzy.ro/wp-content/uploads/2025/02/Logo-Smart-by-BT-Direct-1-300x115.webp" alt="Smart by BT">
+      <img src="https://yzzy.ro/wp-content/uploads/2025/06/LP-logo-small-300x86.png" alt="LeanPay">
+      <img src="https://yzzy.ro/wp-content/uploads/2025/02/tbi-bank-logo.webp" alt="TBI Bank">
+    </div>
+  </div>
+</div>
+${p.desc||p.short?`<div class="desc-box"><h3>Despre produs</h3><p>${p.desc||p.short}</p></div>`:''}`;
+
+const gimg=document.getElementById('gimg');
+document.getElementById('gthumbs').addEventListener('click',e=>{
+  const t=e.target.closest('.gthumb');if(!t)return;
+  document.querySelectorAll('.gthumb').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');gimg.src=p.imgs[+t.dataset.i];
+});
+const qVal=document.getElementById('qVal');
+document.getElementById('qMinus').addEventListener('click',()=>{qty=Math.max(1,qty-1);qVal.textContent=qty});
+document.getElementById('qPlus').addEventListener('click',()=>{qty++;qVal.textContent=qty});
+document.getElementById('addBtn').addEventListener('click',()=>addToCart(p.id,qty));
+
+const rel=P.filter(x=>x.cat===p.cat&&x.id!==p.id).slice(0,4);
+const relEl=document.getElementById('related');
+relEl.innerHTML=rel.map(cardHTML).join('');
+bindAddButtons(relEl);
+initReveal();
+</script>
+</body>
+</html>
